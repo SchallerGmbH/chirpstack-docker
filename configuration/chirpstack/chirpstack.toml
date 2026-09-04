@@ -6,6 +6,15 @@
   # Options are: trace, debug, info, warn error.
   level="info"
 
+[gateway]
+  client_cert_lifetime="24months"
+  ca_cert="/etc/chirpstack/certs/ca.pem"
+  ca_key="/etc/chirpstack/certs/ca.key"
+
+[integration.mqtt.client]
+  client_cert_lifetime="24months"
+  ca_cert="/etc/chirpstack/certs/ca.pem"
+  ca_key="/etc/chirpstack/certs/ca.key"
 
 # PostgreSQL configuration.
 [postgresql]

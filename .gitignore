@@ -5,3 +5,12 @@
 # data folder
 /data
 /lorawan-devices
+
+# ceritficates
+certs/
+*.crt
+*.key
+
+# temporary files
+*.bak
+*.tmp

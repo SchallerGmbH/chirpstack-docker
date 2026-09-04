@@ -5,6 +5,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./configuration/chirpstack:/etc/chirpstack
+      - ./configuration/certs/:/etc/chirpstack/certs/
+
     depends_on:
       - postgres
       - mosquitto
@@ -15,6 +17,7 @@ services:
       - POSTGRESQL_HOST=postgres
     ports:
       - "8080:8080"
+      - "8443:443"
 
   chirpstack-gateway-bridge:
     image: chirpstack/chirpstack-gateway-bridge:4
@@ -73,9 +76,28 @@ services:
     restart: unless-stopped
     ports:
       - "1883:1883"
+      - "8883:8883"
     volumes: 
       - ./configuration/mosquitto/config/:/mosquitto/config/
+      - ./configuration/mosquitto/acl:/mosquitto/acl
+      - ./configuration/certs/:/mosquitto/certs/
+
+  nodered:
+    image: nodered/node-red
+    restart: unless-stopped
+    ports:
+      - "1880:1880"
+    environment:
+      - TZ=Europe/Vienna
+    volumes:
+      - node-red-data:/data
+      #- ./configuration/node-red/flows.json:/data/flows.json
+      #- ./configuration/node-red/package.json:/data/package.json
+      #- ./configuration/node-red/settings.json:/data/settings.json
+    depends_on:
+      - mosquitto
 
 volumes:
   postgresqldata:
   redisdata:
+  node-red-data:
